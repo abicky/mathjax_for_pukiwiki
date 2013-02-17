@@ -1,0 +1,50 @@
+--- make_link.php.orig	2013-02-17 06:37:26.000000000 +0900
++++ make_link.php	2013-02-17 15:13:51.000000000 +0900
+@@ -55,6 +55,7 @@
+ 		if ($converters === NULL) {
+ 			$converters = array(
+ 				'plugin',        // Inline plugins
++				'mathjax',       // MathJax
+ 				'note',          // Footnotes
+ 				'url',           // URLs
+ 				'url_interwiki', // URLs (interwiki definition)
+@@ -98,7 +99,7 @@
+ 		$arr = explode("\x08", make_line_rules(htmlspecialchars($string)));
+ 		$retval = '';
+ 		while (! empty($arr)) {
+-			$retval .= array_shift($arr) . array_shift($this->result);
++			$retval .= str_replace('\\$', '$', array_shift($arr)) . array_shift($this->result);
+ 		}
+ 		return $retval;
+ 	}
+@@ -275,6 +276,30 @@
+ 	}
+ }
+ 
++// MathJax
++class Link_mathjax extends Link_plugin
++{
++	var $param = '';
++
++	function get_pattern()
++	{
++		$this->pattern = '(?<!\\\\)\$((.+?))(?<!\\\\)\$';
++		return $this->pattern;
++	}
++
++	function get_count()
++	{
++		return 2;
++	}
++
++	function set($arr, $page)
++	{
++		$this->param = "\n";  // flag which means a call from Link_mathjax#toString
++		list($all, $body) = $this->splice($arr);
++		return parent::setParam($page, 'mathjax', $body, 'plugin');
++	}
++}
++
+ // Footnotes
+ class Link_note extends Link
+ {

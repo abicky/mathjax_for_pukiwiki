@@ -1,0 +1,31 @@
+--- convert_html.php.orig	2013-02-17 06:37:26.000000000 +0900
++++ convert_html.php	2013-02-17 15:13:54.000000000 +0900
+@@ -900,6 +900,28 @@
+ 				continue;
+ 			}
+ 
++			// MathJax
++                        if (exist_plugin_convert('mathjax')) {
++				$end_mark = '';
++				if (substr($line, 0, 2) == '\\[') {
++					$end_mark = '\\]';
++				} else if (substr($line, 0, 6) == '\\begin') {
++					$end_mark = '\\end';
++				}
++
++				if ($end_mark) {
++					while (! empty($lines)) {
++						if (strpos($line, $end_mark) !== false) {
++							break;
++						}
++						$next_line = preg_replace("/[\r\n]*$/", '', array_shift($lines));
++						$line .= ' ' . $next_line;
++					}
++					$this->last  = & $this->last->add(new Div(array('', 'mathjax', $line)));
++					continue;
++				}
++			}
++
+ 			// Default
+ 			$this->last = & $this->last->add(Factory_Inline($line));
+ 		}
