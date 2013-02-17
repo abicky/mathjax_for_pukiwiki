@@ -1,12 +1,12 @@
 <?php
 /**
  * MathJax Plugin for PukiWiki
- * $Id: mathjax.inc.php,v 0.01 2013/02/17 15:31 abicky Exp $
+ * $Id: mathjax.inc.php,v 0.02 2013/02/17 20:20 abicky Exp $
  *
  * @author     abicky
  * @license    GPL 2 (http://www.gnu.org/licenses/gpl-2.0.html)
  * @link       https://github.com/abicky/mathjax_for_pukiwiki
- * @version    0.01
+ * @version    0.02
  */
 
 define('MATHJAX_URL', 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML');
@@ -97,8 +97,9 @@ class MathJax
     static private function _generate_equation($eq)
     {
         if ($eq) {
-            $first_char = substr(ltrim($eq), 0, 1);
-            if ($first_char != '\\') {
+            $eq = ltrim($eq);
+            if (substr($eq, 0, 1) != '\\' ||
+                (strpos($eq, '\\[') !== 0 && strpos($eq, '\\begin') !== 0)) {
                 $text = "\\[ $eq \\]";
             } else {
                 $text = $eq;

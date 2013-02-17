@@ -109,6 +109,10 @@ class MathJaxTest extends PHPUnit_Framework_TestCase
                   array('\\begin{equation} z = f(x', ' y) \\end{equation}'),
                   '\\begin{equation} z = f(x, y) \\end{equation}'
                 ),
+            array(sprintf($html_format, $style, '\\[ \\alpha \\]'),
+                  array('\\alpha'),
+                  '#mathjax(\\alpha)'
+                ),
             );
     }
 }
