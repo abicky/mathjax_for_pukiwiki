@@ -20,7 +20,7 @@ MathJax.Hub.Config({
         Macros: {
             bm: ["\\\\boldsymbol{#1}", 1],
             argmax: ["\\\\mathop{\\\\rm arg\\\\,max}\\\\limits"],
-            argmin: ["\\\\mathop{\\\\rm arg\\\\,min}\\\\limits"],
+            argmin: ["\\\\mathop{\\\\rm arg\\\\,min}\\\\limits"]
         },
         extensions: ["autobold.js", "color.js"],
         equationNumbers: {
